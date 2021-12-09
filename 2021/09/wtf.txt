@@ -1,0 +1,36 @@
+public static int findBasin (int r, int c, int[][] grid, int depth) {
+    if (c+1 >= grid[r].length || grid[r][c+1] == 9) {
+      if (c-1 < 0 || grid[r][c-1] == 9) {
+        if (r+1 >= grid.length || grid[r+1][c] == 9) {
+          if (r-1 < 0 || grid[r-1][c] == 9) {
+            grid[r][c] = 9;
+            return depth+1;
+          }
+        }
+      }
+    }
+
+    int one = 0;
+    int two = 0;
+    int three = 0;
+    int four = 0;
+    if (c+1 < grid[r].length && grid[r][c+1] != 9) {
+      grid[r][c] = 9;
+      one = findBasin(r, c+1, grid, depth++);
+    }
+    if (c-1 >= 0 && grid[r][c-1] != 9) {
+      grid[r][c] = 9;
+      two = findBasin(r, c-1, grid, depth++);
+    }
+    if (r+1 < grid.length && grid[r+1][c] != 9) {
+      grid[r][c] = 9;
+      three = findBasin(r+1, c, grid, depth++);
+    }
+    if (r-1 >= 0 && grid[r-1][c] != 9) {
+      grid[r][c] = 9;
+      four = findBasin(r-1, c, grid, depth++);
+    }
+    System.out.println(one+" "+two+" "+three+" "+four);
+    return (one + two + three + four + 1);
+
+  }
