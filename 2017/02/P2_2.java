@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class P2 {
+public class P2_2 {
   public static void main(String[] args) throws IOException {
     File f = new File (args[0]);
     Scanner sc = new Scanner (f);
@@ -17,17 +17,21 @@ public class P2 {
 
     int checksum = 0;
     for (int i = 0; i < data.size(); i++) {
-      int max = 0;
-      int min = 100000;
+      int q = 0;
       for (int j = 0; j < data.get(i).size(); j++) {
-        if (data.get(i).get(j) < min) {
-          min = data.get(i).get(j);
+        int one = data.get(i).get(j);
+        for (int k = 0; k < data.get(i).size(); k++) {
+          int two = data.get(i).get(k);
+          if (j != k && one % two == 0) {
+            q = one/two;
+            break;
+          }
         }
-        if (data.get(i).get(j) > max) {
-          max = data.get(i).get(j);
+        if (q != 0) {
+          break;
         }
       }
-      checksum += max-min;
+      checksum += q;
     }
 
     System.out.println(checksum);
