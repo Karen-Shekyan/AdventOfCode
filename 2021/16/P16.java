@@ -3,75 +3,50 @@ import java.io.*;
 
 public class P16 {
 
-  public static String[] op0 (String m, String vSum) {
-    int l = Integer.parseInt(m.substring(0,15),2);//recusion. think about what to do
-    m = m.substring(15);                          //with that.
-    int v = Integer.parseInt(m.substring(0,3),2);
-    m = m.substring(3);
-    int newV = v + Integer.parseInt(vSum);
-    vSum = newV;
-    int t = Integer.parseInt(m.substring(0,3),2);
-    m = m.substring(0,3);
+  public static int vSum = 0;
+  public static int i = 0;
 
-  }
-
-  public static String[] op1 (String m, String vSum) {
-    int l = Integer.parseInt(m.substring(0,11),2);
-    m = m.substring(11);
-  }
-
-  public static String[] lit (String m, String ans) {
-    if (m.charAt(0) == '0') {
-      String group = m.substring(1,5);
-      int d = Integer.parseInt(group,2);
-      ans += d;
-      m = m.substring(5);
-      while (m.charAt(0) == '0') {
-        m.substring(1);
-      }
-      String[] arr = {m, ans};
-      return arr;
-    }
-    else {
-      String group = m.substring(1,5);
-      m = m.substring(5);
-      int d = Integer.parseInt(group,2);
-      ans += d;
-      return lit(m,ans);
-    }
-  }
-
-  public static int versionSum(String m) {
-    int vSum = 0;
-    while (m.length() != 0) {
-      String v = m.substring(0,3);
-      vSum += Integer.parseInt(v,2);
-      m = m.substring(3);
-      String t = m.substring(0,3);
-      int type = Integer.parseInt(t,2);
-      m = m.substring(3);
-      if (type != 4) {
-        int i = Integer.parseInt(m.substring(0,1));
-        m = m.substring(1);
-        if (i == 0) {
-          String tempV = "" + vSum;
-          String[] data = op0(m,tempV);
-          m = data[0];
-          vSum = Integer.parseInt(data[1]);
-        }
-        else {
-          String tempV = "" + vSum;
-          String[] data = op1(m,tempV);
-          m = data[0];
-          vSum = Integer.parseInt(data[1]);
+  public static int op (String m) {
+    //System.out.println(vSum + " " + i);
+    vSum += Integer.parseInt(m.substring(i,i+3),2);
+    i += 3;
+    int type = Integer.parseInt(m.substring(i,i+3),2);
+    i += 3;
+    if (type != 4) {
+      if (m.charAt(i) == '1') {
+        i++;
+        int l = Integer.parseInt(m.substring(i,i+11),2);
+        i += 11;
+        int counter = 0;
+        while (counter < l) {
+          op(m);
+          counter++;
+          //System.out.println(l);
         }
       }
       else {
-        String[] data = lit(m,"");
-        m = data[0];
+        i++;
+        int l = Integer.parseInt(m.substring(i,i+15),2);
+        i += 15;
+        int end = i + l;
+        //System.out.println(end);
+        while (i < end) {
+          op(m);
+        }
       }
     }
-    return vSum;
+    else {
+      String n = "";
+      while (m.charAt(i) != '0') {
+        i++;
+        n += m.substring(i,i+4);
+        i += 4;
+      }
+      i++;
+      n += m.substring(i,i+4);
+      i += 4;
+    }
+    return 0;
   }
 
   public static void main(String[] args) throws IOException {
@@ -131,6 +106,8 @@ public class P16 {
       }
     }
 
-    System.out.println(versionSum(m));
+    op(m);
+    //System.out.println(m.length());
+    System.out.println(vSum);
   }
 }
