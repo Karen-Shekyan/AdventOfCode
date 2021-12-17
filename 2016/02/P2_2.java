@@ -15,15 +15,17 @@ public class P2_2 {
 
     //System.out.println(Arrays.toString(data));
 
-    int[][] grid = new int[5][5];
-    for (int i = 0; i < 3; i++) {
-      grid[i][0] = i*3 + 1;
-      grid[i][1] = i*3 + 2;
-      grid[i][2] = i*3 + 3;
+    char[][] grid = {
+      {'-', '-', '1', '-', '-'},
+      {'-', '2', '3', '4', '-'},
+      {'5', '6', '7', '8', '9'},
+      {'-', 'A', 'B', 'C', '-'},
+      {'-', '-', 'D', '-', '-'}
+    };
+
+    for (int i = 0; i < grid.length; i++) {
+      System.out.println(Arrays.toString(grid[i]));
     }
-    // for (int i = 0; i < 3; i++) {
-    //   System.out.println(Arrays.toString(grid[i]));
-    // }
 
     int r = 1;
     int c = 1;
@@ -31,22 +33,22 @@ public class P2_2 {
     for (int i = 0; i < data.length; i++) {
       for (int j = 0; j < data[i].length(); j++) {
         if (data[i].charAt(j) == 'R') {
-          if (c + 1 < 3) {
+          if (c+1 < 5 && grid[r][c+1] != '-') {
             c++;
           }
         }
         if (data[i].charAt(j) == 'L') {
-          if (c - 1 > -1) {
+          if (c-1 > -1 && grid[r][c-1] != '-') {
             c--;
           }
         }
         if (data[i].charAt(j) == 'U') {
-          if (r - 1 > -1) {
+          if (r-1 > -1 && grid[r-1][c] != '-') {
             r--;
           }
         }
         if (data[i].charAt(j) == 'D') {
-          if (r + 1 < 3) {
+          if (r+1 < 5 && grid[r+1][c] != '-') {
             r++;
           }
         }
