@@ -59,8 +59,7 @@ public class P20 {
     }
 
     int steps = 0;
-    while (steps < 50) {
-      System.out.println(steps);
+    while (steps < 3) {
       ArrayList<ArrayList<String>> newImage = new ArrayList<ArrayList<String>>();
       for (int r = 1; r < image.size()-1; r++) {
         ArrayList<String> newRow = new ArrayList<String>();
