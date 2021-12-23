@@ -3,44 +3,56 @@ import java.io.*;
 
 public class P22 {
 
-  public static int[] findOverlap (int[] c, int[] o) {
-    int[] ans = new int[6];
+  public static long[] findOverlap (long[] c, long[] o) {
+    long[] ans = new long[7];
     boolean ox = false;
     boolean oy = false;
     boolean oz = false;
+    if (o[0] == 0) {
+      ans[0] = 1;
+    }
     for (int i = 1; i < c.length; i++) {
-      ans[i-1] = c[i];
+      ans[i] = c[i];
     }
 //x
     if (o[1] >= c[1] && o[1] <= c[2]) {
       ox = true;
-      ans[0] = o[1];
+      ans[1] = o[1];
     }
     if (o[2] >= c[1] && o[2] <= c[2]) {
       ox = true;
-      ans[1] = o[2];
+      ans[2] = o[2];
+    }
+    if (o[1] < c[1] && o[2] > c[2]) {
+      ox = true;
     }
 //y
-    if (o[3] >= c[3] && o[1] <= c[4]) {
+    if (o[3] >= c[3] && o[3] <= c[4]) {
       oy = true;
-      ans[2] = o[3];
+      ans[3] = o[3];
     }
-    if (o[4] >= c[3] && o[2] <= c[4]) {
+    if (o[4] >= c[3] && o[4] <= c[4]) {
       oy = true;
-      ans[3] = o[4];
+      ans[4] = o[4];
+    }
+    if (o[3] < c[3] && o[4] > c[4]) {
+      oy = true;
     }
 //z
-    if (o[5] >= c[5] && o[1] <= c[6]) {
+    if (o[5] >= c[5] && o[5] <= c[6]) {
       oz = true;
-      ans[4] = o[5];
+      ans[5] = o[5];
     }
-    if (o[6] >= c[5] && o[2] <= c[6]) {
+    if (o[6] >= c[5] && o[6] <= c[6]) {
       oz = true;
-      ans[5] = o[6];
+      ans[6] = o[6];
+    }
+    if (o[5] < c[5] && o[6] > c[6]) {
+      oz = true;
     }
 
     if (!(ox && oy && oz)) {
-      ans[0] = -2147483648;
+      ans[0] = -1;
     }
     return ans;
   }
@@ -54,9 +66,9 @@ public class P22 {
       data1.add(sc.nextLine());
     }
 
-    ArrayList<int[]> data = new ArrayList<int[]>();//[on/off,x1,x2,y1,y2,z1,z2]
+    ArrayList<long[]> data = new ArrayList<long[]>();//[on/off,x1,x2,y1,y2,z1,z2]
     for (int i = 0; i < data1.size(); i++) {
-      int[] row = new int[7];
+      long[] row = new long[7];
       String s = data1.get(i);
       if (s.contains("on")) {
         row[0] = 1;
@@ -72,40 +84,44 @@ public class P22 {
       row[6] = Integer.parseInt(s.substring(s.indexOf("..")+2));
       data.add(row);
     }
-
+    //Collections.reverse(data);
 //start and end in every dimension is in order (start <= end);
-    ArrayList<ArrayList<int[]>> volumes = new ArrayList<ArrayList<int[]>>();
-    for (int i = 0; i < data.size(); i++) {
-      int[] cuboid = data.get(i);
-      if (cuboid[0] == 1) {
-        ArrayList<int[]> overlaps = new ArrayList<int[]>();//[add,sub,...]
-        overlaps.add(cuboid);
-        for (int j = i+1; j < data.size(); j++) {
-          int[] overlap;
-          overlap = findOverlap(cuboid,data.get(j));
-          if (overlap[0] != -2147483648) {
-            overlaps.add(overlap);
-          }
+    ArrayList<long[]> volumes = new ArrayList<long[]>();
+    volumes.add(data.get(0));
+    for (int i = 1; i < data.size(); i++) {
+      ArrayList<long[]> newO = new ArrayList<long[]>();
+      long[] cuboid = data.get(i);
+      for (int j = 0; j < volumes.size(); j++) {
+        long[] other = volumes.get(j);
+        long[] overlap = findOverlap(cuboid,other);
+        if (overlap[0] != -1) {
+          newO.add(overlap);
         }
-        volumes.add(overlaps);
+      }
+      for (int j = 0; j < newO.size(); j++) {
+        volumes.add(newO.get(j));
+      }
+      if (cuboid[0] == 1) {
+        volumes.add(cuboid);
       }
     }
-//first array in every element in volumes has len 7. all others in that element
-//have len 6. first element has a 1 or 0 in pos 0 for on/off.
-    int ans = 0;
+    // for (int i = 0; i < volumes.size(); i++) {
+    //   System.out.println(Arrays.toString(volumes.get(i)));
+    // }
+
+    long ans = 0;
     for (int i = 0; i < volumes.size(); i++) {
-      int x = volumes.get(i).get(0)[2] - volumes.get(i).get(0)[1];
-      int y = volumes.get(i).get(0)[4] - volumes.get(i).get(0)[3];
-      int z = volumes.get(i).get(0)[6] - volumes.get(i).get(0)[5];
-      int volume = x*y*z;
-      for (int j = 1; j < volumes.get(i).size(); j++) {
-        int mx = volumes.get(i).get(j)[2] - volumes.get(i).get(j)[1];
-        int my = volumes.get(i).get(j)[2] - volumes.get(i).get(j)[1];
-        int mz = volumes.get(i).get(j)[2] - volumes.get(i).get(j)[1];
-        int mvolume = mx*my*mz;
-        volume -= mvolume;
+      long[] cube = volumes.get(i);
+      long x = cube[2] - cube[1] + 1;
+      long y = cube[4] - cube[3] + 1;
+      long z = cube[6] - cube[5] + 1;
+      if (cube[0] == 1) {
+        ans += x*y*z;
       }
-      ans += volume;
+      else {
+        ans -= x*y*z;
+      }
+      //System.out.println(ans);
     }
 
     System.out.println(ans);
