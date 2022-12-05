@@ -4,8 +4,8 @@ compile: main.o
 run: out
 	./out
 
-clean:
-	rm *.o out
-
 main.o: $(ARGS)_main.c
 	gcc -c $(ARGS)_main.c
+
+clean:
+	rm *.o out
