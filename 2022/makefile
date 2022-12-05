@@ -1,0 +1,11 @@
+compile: main.o
+	gcc -Wall -o out $(ARGS)_main.o
+
+run: out
+	./out
+
+clean:
+	rm *.o out
+
+main.o: $(ARGS)_main.c
+	gcc -c $(ARGS)_main.c
