@@ -15,18 +15,29 @@ int main(int argc, char const *argv[]) {
 
   char *input = malloc(512);
 
-  int stackEX[1000];
-
   // EXAMPLE CODE:
-  int *sp;
-
-  {
-      sp = stackEX; /* initialize */
-
-      push(sp, 10);
-      int x = pop(sp);
-  }
+  // int stackEX[1000];
   //
+  // int *sp;
+  //
+  // {
+  //     sp = stackEX; /* initialize */
+  //
+  //     push(sp, 10);
+  //     int x = pop(sp);
+  // }
+  //
+
+  // INPUT:
+  //             [J]             [B] [W]
+  //             [T]     [W] [F] [R] [Z]
+  //         [Q] [M]     [J] [R] [W] [H]
+  //     [F] [L] [P]     [R] [N] [Z] [G]
+  // [F] [M] [S] [Q]     [M] [P] [S] [C]
+  // [L] [V] [R] [V] [W] [P] [C] [P] [J]
+  // [M] [Z] [V] [S] [S] [V] [Q] [H] [M]
+  // [W] [B] [H] [F] [L] [F] [J] [V] [B]
+  // 1   2   3   4   5   6   7   8   9
 
   char *one;
   char *two;
